@@ -7,7 +7,7 @@ Tweet
 {% block content %}
 <h1> Welcome to my Django</h1>
 
-<a class ="btn-primary" href="{% url 'tweet_create' %}">Create a tweet</a>
+<a class ="btn btn-primary" href="{% url 'tweet_create' %}">Create a tweet</a>
 <div class="container row gap-3">
     {% for tweet in tweets %}
      <div class="card" style="width: 18rem;">
@@ -15,8 +15,8 @@ Tweet
   <div class="card-body">
     <h5 class="card-title">{{tweet.user.username}}</h5>
     <p class="card-text">{{tweet.text}}</p>
-    <a href="{% url 'tweet_edit' tweet_id%}" class="btn btn-primary">Edit</a>
-    <a href="{% url 'tweet_delete' tweet_id%}" class="btn btn-primary">Delete</a>
+    <a href="{% url 'tweet_edit' tweet.id%}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'tweet_delete' tweet.id%}" class="btn btn-primary">Delete</a>
   </div>
 </div>
     {% endfor %}
