@@ -27,7 +27,7 @@ def tweet_edit(request,tweet_id):
          if request.method=='POST':
              form=TweetForm(request.POST,request.FILES,instance=tweet)
              if form.is_valid():
-                 tweet=form.save(commit=false)
+                 tweet=form.save(commit=False)
                  tweet.user=request.user
                  tweet.save()
                  return redirect('tweet_list')
