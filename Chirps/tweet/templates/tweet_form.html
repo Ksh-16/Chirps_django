@@ -1,21 +1,175 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Tweet
+{% if form.instance.pk %}
+Edit Tweet - Chirps
+{% else %}
+Create Tweet - Chirps
+{% endif %}
 {% endblock %}
 
 {% block content %}
-<h1> Welcome to my Django</h1>
-<h2>{%if form.instance.pk %}
-    Edit Tweet
-    {% else %} 
-    Create tweet 
-    {% endif %}
-    <form method="post" enctype="multipart/form-data" class="form">
-         {% csrf_token %} 
-        {{ form.as_p }}
-        <button class="btn btn-warning" type="submit">Submit</button>
-    </form>
-    <a href="{% url 'tweet_list' %}">Back to tweet list</a>
-</h2>
+<div class="py-4">
+    <h1 class="h3 fw-bold mb-4">
+        {% if form.instance.pk %}
+            Edit your tweet
+        {% else %}
+            What's happening!?
+        {% endif %}
+    </h1>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <!-- User Info Section -->
+            <div class="d-flex gap-3 mb-4">
+                <div class="flex-shrink-0">
+                    <div class="avatar-placeholder" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 500;">
+                        {{ user.username|first|upper }}
+                    </div>
+                </div>
+                <div class="flex-grow-1">
+                    <p class="mb-0 fw-bold text-dark">{{ user.get_full_name|default:user.username }}</p>
+                    <p class="mb-0 small text-muted">@{{ user.username }}</p>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form method="post" enctype="multipart/form-data" class="tweet-form">
+                {% csrf_token %}
+
+                <!-- Tweet Text Field -->
+                <div class="mb-4">
+                    <textarea 
+                        name="text" 
+                        class="form-control form-control-lg border-0 fs-5" 
+                        placeholder="What's happening!?" 
+                        rows="6"
+                        style="resize: vertical; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1); border-radius: 8px !important;"
+                        maxlength="240"
+                        id="tweetText"
+                        required
+                    >{% if form.instance.text %}{{ form.instance.text }}{% endif %}</textarea>
+                    {% if form.text.errors %}
+                        <div class="alert alert-danger small mt-2" role="alert">
+                            {{ form.text.errors }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Character Counter -->
+                    <div class="d-flex justify-content-between align-items-center mt-2 small text-muted">
+                        <div>
+                            <small>Add a photo to make your tweet more engaging</small>
+                        </div>
+                        <div class="character-count" id="charCount">
+                            <span id="charLength">0</span> / 240
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo Upload Section -->
+                <div class="mb-4 pb-3 border-bottom">
+                    <div class="position-relative">
+                        <input 
+                            type="file" 
+                            name="photo" 
+                            accept="image/*" 
+                            class="form-control" 
+                            id="photoInput"
+                            style="display: none;"
+                        >
+                        <label for="photoInput" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2" style="cursor: pointer; color: #6366f1; border-color: #6366f1;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <path d="m21 15-5-5-6 6"/>
+                            </svg>
+                            Add photo
+                        </label>
+                        {% if form.photo.value %}
+                            <div class="mt-2">
+                                <small class="text-muted">Current: {{ form.photo.value.name }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if form.photo.errors %}
+                        <div class="alert alert-danger small mt-2" role="alert">
+                            {{ form.photo.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 justify-content-end">
+                    <a href="{% url 'tweet_list' %}" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary" style="background-color: #6366f1; border-color: #6366f1;">
+                        {% if form.instance.pk %}
+                            Update Tweet
+                        {% else %}
+                            Tweet
+                        {% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Help Tip -->
+    <div class="alert alert-info alert-sm mt-4" role="alert">
+        <strong>💡 Tip:</strong> Keep your tweets concise and engaging. Photos increase engagement significantly.
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('tweetText');
+    const charLength = document.getElementById('charLength');
+
+    function updateCharCount() {
+        charLength.textContent = textarea.value.length;
+    }
+
+    textarea.addEventListener('input', updateCharCount);
+    updateCharCount();
+});
+</script>
+
+<style>
+.form-control-lg {
+    font-size: 1.125rem;
+    line-height: 1.5;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2);
+}
+
+.btn-primary {
+    background-color: #6366f1;
+    border-color: #6366f1;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.character-count {
+    font-weight: 500;
+    color: #6366f1;
+}
+
+#charLength {
+    font-weight: bold;
+}
+
+.alert-info {
+    background-color: rgba(99, 102, 241, 0.1);
+    border-color: #c7d2fe;
+    color: #3730a3;
+}
+</style>
 {% endblock %}
