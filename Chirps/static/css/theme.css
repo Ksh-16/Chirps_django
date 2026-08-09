@@ -14,12 +14,12 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --text-dark: #f3f4f6;
-        --text-light: #d1d5db;
-        --text-muted: #9ca3af;
-        --border-light: #374151;
-        --bg-light: #111827;
-        --card-bg: #1f2937;
+        --text-dark: #f3f4f6 !important;
+        --text-light: #d1d5db !important;
+        --text-muted: #a0a9b8 !important;
+        --border-light: #374151 !important;
+        --bg-light: #111827 !important;
+        --card-bg: #1f2937 !important;
     }
 }
 
@@ -33,6 +33,51 @@ body {
     color: var(--text-dark);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Text Visibility - Force all text to be visible */
+@media (prefers-color-scheme: dark) {
+    body,
+    body p,
+    body h1,
+    body h2,
+    body h3,
+    body h4,
+    body h5,
+    body h6,
+    body a,
+    body label,
+    body span,
+    body div,
+    body li,
+    body td,
+    body th {
+        color: var(--text-dark) !important;
+    }
+
+    .text-dark,
+    .text-body,
+    p,
+    span,
+    label,
+    a {
+        color: var(--text-dark) !important;
+    }
+
+    .text-muted,
+    .text-secondary {
+        color: var(--text-light) !important;
+    }
+
+    /* Ensure all content text is visible */
+    .card-body,
+    .card-text,
+    .card-title,
+    .lead,
+    .small,
+    small {
+        color: var(--text-dark) !important;
+    }
 }
 
 /* Navbar Styles */
@@ -66,6 +111,16 @@ body {
 
 .nav-link:hover {
     color: var(--primary-color) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .nav-link {
+        color: #f3f4f6 !important;
+    }
+
+    .nav-link:hover {
+        color: #818cf8 !important;
+    }
 }
 
 /* Container Styles */
@@ -113,16 +168,34 @@ body {
 
 @media (prefers-color-scheme: dark) {
     .card {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        background-color: var(--card-bg) !important;
+        border-color: var(--border-light) !important;
+        color: var(--text-dark) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .card * {
+        color: var(--text-dark) !important;
     }
 
     .card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
     }
 }
 
 .card:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    color: var(--text-dark);
+    padding: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .card-body {
+        color: var(--text-dark) !important;
+    }
 }
 
 .card-body {
@@ -139,6 +212,19 @@ textarea.form-control {
     transition: all 0.2s ease;
 }
 
+@media (prefers-color-scheme: dark) {
+    .form-control,
+    textarea.form-control {
+        background-color: var(--card-bg) !important;
+        color: var(--text-dark) !important;
+        border-color: var(--border-light) !important;
+    }
+
+    .form-control::placeholder {
+        color: var(--text-muted) !important;
+    }
+}
+
 .form-control:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.1);
@@ -147,13 +233,22 @@ textarea.form-control {
 }
 
 @media (prefers-color-scheme: dark) {
-    .form-control {
-        border-color: var(--border-light);
-    }
-
     .form-control:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.3);
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.3) !important;
+        background-color: var(--card-bg) !important;
+        color: var(--text-dark) !important;
+    }
+}
+
+.form-label {
+    color: var(--text-dark) !important;
+    font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+    .form-label {
+        color: var(--text-dark) !important;
     }
 }
 
@@ -184,8 +279,17 @@ textarea.form-control {
 }
 
 @media (prefers-color-scheme: dark) {
+    .tweet-card {
+        background: var(--card-bg) !important;
+        border-color: var(--border-light) !important;
+    }
+
     .tweet-card:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .tweet-card * {
+        color: var(--text-dark) !important;
     }
 }
 
@@ -204,18 +308,36 @@ textarea.form-control {
 
 .tweet-username {
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text-dark) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .tweet-username {
+        color: var(--text-dark) !important;
+    }
 }
 
 .tweet-handle {
-    color: var(--text-light);
+    color: var(--text-light) !important;
     font-size: 0.875rem;
 }
 
+@media (prefers-color-scheme: dark) {
+    .tweet-handle {
+        color: var(--text-light) !important;
+    }
+}
+
 .tweet-text {
-    color: var(--text-dark);
+    color: var(--text-dark) !important;
     line-height: 1.5;
     margin: 0.75rem 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .tweet-text {
+        color: var(--text-dark) !important;
+    }
 }
 
 .tweet-image {
@@ -225,8 +347,14 @@ textarea.form-control {
 }
 
 .tweet-timestamp {
-    color: var(--text-light);
+    color: var(--text-light) !important;
     font-size: 0.875rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .tweet-timestamp {
+        color: var(--text-light) !important;
+    }
 }
 
 /* Alert Styles */
@@ -285,20 +413,50 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
+@media (prefers-color-scheme: dark) {
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--text-dark) !important;
+    }
+}
+
 p {
     color: var(--text-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+    p {
+        color: var(--text-dark) !important;
+    }
 }
 
 .lead {
     color: var(--text-light);
 }
 
+@media (prefers-color-scheme: dark) {
+    .lead {
+        color: var(--text-light) !important;
+    }
+}
+
 .text-muted {
     color: var(--text-muted) !important;
 }
 
+@media (prefers-color-scheme: dark) {
+    .text-muted {
+        color: var(--text-light) !important;
+    }
+}
+
 .text-secondary {
     color: var(--text-light) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .text-secondary {
+        color: var(--text-light) !important;
+    }
 }
 
 /* Spacing Utilities */
@@ -325,6 +483,123 @@ footer {
     background-color: var(--card-bg);
     color: var(--text-dark);
     border-top: 1px solid var(--border-light);
+}
+
+/* ===== AGGRESSIVE DARK MODE FIXES ===== */
+@media (prefers-color-scheme: dark) {
+    /* Force all text colors in dark mode */
+    body, 
+    body * {
+        color: #f3f4f6 !important;
+    }
+
+    /* Text elements - highest priority */
+    p, 
+    span, 
+    div, 
+    h1, 
+    h2, 
+    h3, 
+    h4, 
+    h5, 
+    h6,
+    a,
+    label {
+        color: #f3f4f6 !important;
+    }
+
+    /* Tweet specific elements */
+    .tweet-username {
+        color: #f3f4f6 !important;
+    }
+
+    .tweet-handle {
+        color: #d1d5db !important;
+    }
+
+    .tweet-text {
+        color: #f3f4f6 !important;
+    }
+
+    .tweet-timestamp {
+        color: #d1d5db !important;
+    }
+
+    /* Form labels */
+    .form-label {
+        color: #f3f4f6 !important;
+    }
+
+    /* Bootstrap text utilities */
+    .text-dark {
+        color: #f3f4f6 !important;
+    }
+
+    .text-muted {
+        color: #d1d5db !important;
+    }
+
+    .text-secondary {
+        color: #d1d5db !important;
+    }
+
+    /* Card text */
+    .card-title {
+        color: #f3f4f6 !important;
+    }
+
+    .card-text {
+        color: #f3f4f6 !important;
+    }
+
+    /* Links */
+    a {
+        color: #818cf8 !important;
+    }
+
+    a:hover {
+        color: #a5b4fc !important;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 {
+        color: #f3f4f6 !important;
+    }
+
+    /* Lead text */
+    .lead {
+        color: #d1d5db !important;
+    }
+
+    /* Small text */
+    small {
+        color: #d1d5db !important;
+    }
+
+    /* Backgrounds */
+    body {
+        background-color: #111827 !important;
+    }
+
+    .card {
+        background-color: #1f2937 !important;
+    }
+
+    .chirps-navbar {
+        background-color: #1f2937 !important;
+    }
+
+    footer {
+        background-color: #1f2937 !important;
+    }
+
+    /* Borders */
+    .border, 
+    .border-top, 
+    .border-bottom,
+    .border-start {
+        border-color: #374151 !important;
+    }
 }
 
 /* Responsive adjustments */
@@ -389,4 +664,126 @@ textarea:focus {
 /* Error color for negative actions */
 .text-danger {
     color: #ef4444 !important;
+}
+
+/* ===== ABSOLUTE FINAL DARK MODE OVERRIDES ===== */
+/* This section runs LAST and forces all visibility in dark mode */
+@media (prefers-color-scheme: dark) {
+    /* UNIVERSAL DARK MODE FIX - Override absolutely everything */
+    * {
+        background-color: inherit !important;
+        color: #f3f4f6 !important;
+    }
+
+    html, body {
+        background-color: #111827 !important;
+        color: #f3f4f6 !important;
+    }
+
+    /* All text elements */
+    p, span, div, section, article, li, td, th, label, 
+    h1, h2, h3, h4, h5, h6, a, strong, em, i, b {
+        color: #f3f4f6 !important;
+    }
+
+    /* Specific classes that matter */
+    .tweet-username, .tweet-handle, .tweet-text, .tweet-timestamp,
+    .card-title, .card-text, .form-label,
+    .text-dark, .text-body, .lead, small {
+        color: #f3f4f6 !important;
+    }
+
+    /* Supporting text */
+    .text-muted, .text-secondary, .text-light {
+        color: #d1d5db !important;
+    }
+
+    /* Links */
+    a, .nav-link {
+        color: #818cf8 !important;
+    }
+
+    a:hover, .nav-link:hover {
+        color: #a5b4fc !important;
+    }
+
+    /* Cards and containers */
+    .card, .tweet-card, .chirps-navbar, footer {
+        background-color: #1f2937 !important;
+        border-color: #374151 !important;
+    }
+
+    /* Form elements */
+    .form-control, textarea, input {
+        background-color: #1f2937 !important;
+        color: #f3f4f6 !important;
+        border-color: #374151 !important;
+    }
+
+    .form-control::placeholder, textarea::placeholder {
+        color: #9ca3af !important;
+    }
+
+    /* Alerts */
+    .alert {
+        color: #f3f4f6 !important;
+    }
+
+    .alert-info {
+        background-color: rgba(99, 102, 241, 0.2) !important;
+        border-color: #4f46e5 !important;
+        color: #bfdbfe !important;
+    }
+
+    .alert-danger {
+        background-color: rgba(239, 68, 68, 0.2) !important;
+        border-color: #ef4444 !important;
+        color: #fca5a5 !important;
+    }
+
+    .alert-warning {
+        background-color: rgba(245, 158, 11, 0.2) !important;
+        border-color: #f59e0b !important;
+        color: #fde68a !important;
+    }
+
+    /* Borders */
+    .border, .border-top, .border-bottom, .border-start, .border-end {
+        border-color: #374151 !important;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background-color: #6366f1 !important;
+        border-color: #6366f1 !important;
+        color: white !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #4f46e5 !important;
+        border-color: #4f46e5 !important;
+    }
+
+    .btn-outline-secondary {
+        color: #f3f4f6 !important;
+        border-color: #374151 !important;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #374151 !important;
+        color: #f3f4f6 !important;
+    }
+
+    /* Bootstrap navbar */
+    .navbar-light {
+        background-color: #1f2937 !important;
+    }
+
+    .navbar-light .navbar-brand {
+        color: #6366f1 !important;
+    }
+
+    .navbar-light .nav-link {
+        color: #f3f4f6 !important;
+    }
 }

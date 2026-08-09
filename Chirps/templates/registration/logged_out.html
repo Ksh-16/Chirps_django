@@ -1,7 +1,79 @@
 {% extends "layout.html" %}
 
-{% block content %}
-<h2>Logged out</h2>
+{% block title %}
+Logged Out - Chirps
+{% endblock %}
 
-<p>You have been logged out.<a href="{% url 'login' %}">Login again!</a></p>
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-5 text-center">
+                <!-- Success Icon -->
+                <div class="mb-4" style="font-size: 3rem;">
+                    ✓
+                </div>
+
+                <!-- Heading -->
+                <h2 class="h4 fw-bold mb-3">You've been logged out</h2>
+
+                <!-- Message -->
+                <p class="text-muted mb-4">
+                    Your session has ended successfully. Thanks for using Chirps! We hope you enjoyed sharing your thoughts.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 justify-content-center mb-4">
+                    <a href="{% url 'login' %}" class="btn btn-primary">
+                        Login Again
+                    </a>
+                    <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+                        Back to Home
+                    </a>
+                </div>
+
+                <!-- Divider -->
+                <hr class="my-4">
+
+                <!-- Additional Info -->
+                <p class="small text-muted mb-0">
+                    Don't have an account? 
+                    <a href="{% url 'register' %}" class="fw-bold logout-link">
+                        Register here
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Help Tip -->
+        <div class="alert alert-info alert-sm mt-4 text-center" role="alert">
+            <small>
+                💡 Your tweets and data are still safe. Login anytime to continue chirping!
+            </small>
+        </div>
+    </div>
+</div>
+
+<style>
+    .logout-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .logout-link:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .logout-link {
+            color: #818cf8 !important;
+        }
+
+        .logout-link:hover {
+            color: #a5b4fc !important;
+        }
+    }
+</style>
 {% endblock %}
