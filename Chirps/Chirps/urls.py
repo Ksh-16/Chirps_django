@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings 
 from django.conf.urls.static import static 
-from django.contrib.auth.urls import views as auth_views
+from django.contrib.auth.views import LogoutView, TemplateView
 from tweet import views as tweet_views
 
 urlpatterns = [
@@ -26,4 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tweet/', include('tweet.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/logout/', LogoutView.as_view(next_page='tweet_list'), name='logout'),
+    path('accounts/logged-out/', TemplateView.as_view(template_name='registration/logged_out.html'), name='logged_out'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
