@@ -1,91 +1,145 @@
 {% extends "layout.html" %}
 
 {% block title %}
-{% if form.instance.pk %}Edit Tweet{% else %}Create Tweet{% endif %}
+Chirps - Create
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6 mx-auto">
-            <!-- Form Container -->
-            <div class="form-container">
-                <!-- Header -->
-                <div class="auth-header mb-4">
-                    {% if form.instance.pk %}
-                        <h2>✏️ Edit Your Tweet</h2>
-                        <p>Update your thoughts and ideas</p>
-                    {% else %}
-                        <h2>✨ Create a New Tweet</h2>
-                        <p>Share what's on your mind</p>
+<div style="padding: 40px 24px;">
+    <div class="form-section">
+        <h2 class="form-title">
+            {% if form.instance.pk %}
+                Edit Chirp
+            {% else %}
+                Create a Chirp
+            {% endif %}
+        </h2>
+
+        <div class="create-wrapper">
+            <div class="create-header">
+                <div class="create-avatar">
+                    {{ user.username|upper|first }}
+                </div>
+                <div class="create-user-info">
+                    <div class="create-username">{{ user.username }}</div>
+                    <div class="create-subtitle">@{{ user.username|lower }}</div>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label class="textarea-label">What's on your mind?</label>
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            class="form-textarea" 
+                            name="text"
+                            maxlength="240"
+                            placeholder="Share your thoughts, ideas, or photos..."
+                            required
+                        >{% if form.instance.text %}{{ form.instance.text }}{% endif %}</textarea>
+                        <div class="char-counter" id="char-counter">
+                            {% if form.instance.text %}{{ form.instance.text|length }}{% else %}0{% endif %}/240
+                        </div>
+                    </div>
+                    {% if form.text.errors %}
+                        <div style="color: #e24b4a; font-size: 12px; margin-top: 6px;">
+                            {{ form.text.errors }}
+                        </div>
                     {% endif %}
                 </div>
 
-                <!-- Form -->
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-
-                    <!-- Tweet Text -->
-                    <div class="form-group">
-                        <label for="{{ form.text.id_for_label }}" class="form-label">
-                            What's happening? 💭
-                        </label>
-                        <textarea class="form-control" id="{{ form.text.id_for_label }}" 
-                                  name="{{ form.text.html_name }}" 
-                                  rows="5" 
-                                  placeholder="Share your thoughts..."
-                                  maxlength="240"
-                                  required>{{ form.text.value|default:"" }}</textarea>
-                        <small class="text-muted d-block mt-2">Maximum 240 characters</small>
-                        {% if form.text.errors %}
-                            <div class="alert alert-danger mt-2">
-                                {{ form.text.errors }}
-                            </div>
-                        {% endif %}
+                <div class="image-upload-section">
+                    <label class="upload-label">Add Photo (Optional)</label>
+                    <div class="upload-area" onclick="document.getElementById('id_photo').click()">
+                        <div class="upload-icon">📸</div>
+                        <div class="upload-text">Click to upload or drag and drop</div>
+                        <div class="upload-hint">PNG, JPG, GIF up to 10MB</div>
                     </div>
-
-                    <!-- Photo Upload -->
-                    <div class="form-group">
-                        <label for="{{ form.photo.id_for_label }}" class="form-label">
-                            📸 Add a Photo (Optional)
-                        </label>
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="{{ form.photo.id_for_label }}" 
-                                   name="{{ form.photo.html_name }}" 
-                                   accept="image/*">
+                    <input 
+                        type="file"
+                        name="photo"
+                        id="id_photo"
+                        accept="image/*"
+                        style="display: none;"
+                        onchange="previewImage(event)"
+                    >
+                    
+                    {% if form.instance.photo %}
+                        <div class="image-preview">
+                            <img src="{{ form.instance.photo.url }}" class="preview-img" alt="Current photo">
+                            <button type="button" class="remove-img" onclick="removeImage()">Remove Photo</button>
                         </div>
-                        {% if form.photo.value %}
-                            <div class="mt-3">
-                                <img src="{{ form.photo.url }}" alt="Current photo" class="img-thumbnail" style="max-height: 200px;">
-                            </div>
-                        {% endif %}
-                        {% if form.photo.errors %}
-                            <div class="alert alert-danger mt-2">
-                                {{ form.photo.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
+                    {% endif %}
+                    
+                    <div id="preview-container"></div>
 
-                    <!-- Submit Button -->
-                    <div class="d-grid gap-2 mb-3">
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            {% if form.instance.pk %}
-                                💾 Save Changes
-                            {% else %}
-                                🚀 Post Tweet
-                            {% endif %}
-                        </button>
-                    </div>
+                    {% if form.photo.errors %}
+                        <div style="color: #e24b4a; font-size: 12px; margin-top: 6px;">
+                            {{ form.photo.errors }}
+                        </div>
+                    {% endif %}
+                </div>
 
-                    <!-- Cancel Link -->
-                    <div class="text-center">
-                        <a href="{% url 'tweet_list' %}" class="auth-link">
-                            ← Back to Feed
-                        </a>
-                    </div>
-                </form>
-            </div>
+                <div class="form-actions">
+                    <a href="{% url 'tweet_list' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        {% if form.instance.pk %}
+                            Update Chirp
+                        {% else %}
+                            Post Chirp
+                        {% endif %}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<script>
+    // Character counter
+    document.querySelector('.form-textarea').addEventListener('input', function() {
+        const count = this.value.length;
+        const counter = document.getElementById('char-counter');
+        counter.textContent = count + '/240';
+        
+        if (count > 200) {
+            counter.classList.add('warning');
+            counter.classList.remove('danger');
+        } else if (count > 230) {
+            counter.classList.add('danger');
+            counter.classList.remove('warning');
+        } else {
+            counter.classList.remove('warning', 'danger');
+        }
+    });
+
+    // Image preview
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById('preview-container');
+                container.innerHTML = `
+                    <div class="image-preview">
+                        <img src="${e.target.result}" class="preview-img" alt="Preview">
+                        <button type="button" class="remove-img" onclick="removeImage()">Remove Photo</button>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function removeImage() {
+        document.getElementById('id_photo').value = '';
+        document.getElementById('preview-container').innerHTML = '';
+        const existingPreview = document.querySelector('.image-preview');
+        if (existingPreview) {
+            existingPreview.remove();
+        }
+    }
+</script>
 {% endblock %}

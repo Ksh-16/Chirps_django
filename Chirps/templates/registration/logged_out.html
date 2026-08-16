@@ -1,43 +1,21 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Logged Out
+Chirps - Logged Out
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6 mx-auto">
-            <!-- Logout Success Card -->
-            <div class="card text-center py-5 mt-5 bg-primary-light border-0">
-                <!-- Success Icon -->
-                <div style="font-size: 4rem; margin-bottom: 1.5rem; color: var(--primary);">
-                    👋
-                </div>
-
-                <!-- Message -->
-                <h2 class="mb-3">You've Been Logged Out</h2>
-                <p class="text-muted fs-5 mb-4">
-                    Thanks for using Chirps! Your session has been safely closed.
-                </p>
-
-                <!-- Action Buttons -->
-                <div class="d-grid gap-3 gap-sm-2">
-                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg">
-                        🔓 Login Again
-                    </a>
-                    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg">
-                        ✨ Create New Account
-                    </a>
-                    <a href="{% url 'tweet_list' %}" class="btn btn-light btn-lg">
-                        🏠 Browse as Guest
-                    </a>
-                </div>
-
-                <!-- Footer Message -->
-                <p class="text-muted mt-4 mb-0">
-                    <small>See you soon! 🐦</small>
-                </p>
+<div style="padding: 40px 24px;">
+    <div class="form-section" style="max-width: 500px;">
+        <div class="logout-container">
+            <div class="logout-icon">👋</div>
+            <h2 class="logout-title">You've Been Logged Out</h2>
+            <p class="logout-message">
+                Your session has ended safely. You can log back in anytime to continue chirping and connecting with your community.
+            </p>
+            <div class="logout-action">
+                <a href="{% url 'tweet_list' %}">Back to Home</a>
+                <a href="{% url 'login' %}">Sign In Again</a>
             </div>
         </div>
     </div>

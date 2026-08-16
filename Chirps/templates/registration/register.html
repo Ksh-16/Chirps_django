@@ -1,108 +1,175 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Register on Chirps
+Chirps - Register
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-5 mx-auto">
-            <!-- Register Form Container -->
-            <div class="form-container">
-                <!-- Header -->
-                <div class="auth-header mb-4">
-                    <h2>🚀 Join Chirps</h2>
-                    <p>Create your account and start sharing</p>
+<div style="padding: 40px 24px;">
+    <div class="form-section">
+        <h2 class="form-title">Join Chirps</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div style="background: rgba(226, 75, 74, 0.1); border: 1px solid rgba(226, 75, 74, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 18px; color: #e24b4a; font-size: 13px;">
+                    {{ form.non_field_errors }}
                 </div>
+            {% endif %}
 
-                <!-- Register Form -->
-                <form method="post">
-                    {% csrf_token %}
-
-                    <!-- Username Field -->
-                    <div class="form-group">
-                        <label for="{{ form.username.id_for_label }}" class="form-label">
-                            Username
-                        </label>
-                        {{ form.username }}
-                        {% if form.username.errors %}
-                            <div class="alert alert-danger mt-2 mb-0 small">
-                                {{ form.username.errors }}
-                            </div>
-                        {% endif %}
-                        <small class="text-muted d-block mt-2">
-                            150 characters or fewer. Letters, digits and @/./+/-/_ only.
-                        </small>
-                    </div>
-
-                    <!-- Email Field -->
-                    <div class="form-group">
-                        <label for="{{ form.email.id_for_label }}" class="form-label">
-                            Email Address
-                        </label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            <div class="alert alert-danger mt-2 mb-0">
-                                {{ form.email.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Password1 Field -->
-                    <div class="form-group">
-                        <label for="{{ form.password1.id_for_label }}" class="form-label">
-                            Password
-                        </label>
-                        {{ form.password1 }}
-                        {% if form.password1.errors %}
-                            <div class="alert alert-danger mt-2 mb-0 small">
-                                {{ form.password1.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Password2 Field -->
-                    <div class="form-group">
-                        <label for="{{ form.password2.id_for_label }}" class="form-label">
-                            Confirm Password
-                        </label>
-                        {{ form.password2 }}
-                        {% if form.password2.errors %}
-                            <div class="alert alert-danger mt-2 mb-0 small">
-                                {{ form.password2.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Non-field Errors -->
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger mb-3">
-                            {% for error in form.non_field_errors %}
-                                <p class="mb-0">{{ error }}</p>
-                            {% endfor %}
+            <div class="form-group">
+                <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                {% if form.username %}
+                    <input 
+                        type="text"
+                        class="form-input"
+                        id="{{ form.username.id_for_label }}"
+                        name="username"
+                        placeholder="Choose a unique username"
+                        required
+                    >
+                    {% if form.username.errors %}
+                        <div style="color: #e24b4a; font-size: 12px; margin-top: 6px;">
+                            {{ form.username.errors }}
                         </div>
                     {% endif %}
-
-                    <!-- Submit Button -->
-                    <div class="d-grid gap-2 mb-3">
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            ✨ Create Account
-                        </button>
-                    </div>
-
-                    <!-- Login Link -->
-                    <div class="text-center">
-                        <p class="mb-0">
-                            Already have an account?
-                            <a href="{% url 'login' %}" class="auth-link">
-                                Login here
-                            </a>
-                        </p>
-                    </div>
-                </form>
+                {% else %}
+                    {{ form.username }}
+                {% endif %}
             </div>
-        </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+                {% if form.email %}
+                    <input 
+                        type="email"
+                        class="form-input"
+                        id="{{ form.email.id_for_label }}"
+                        name="email"
+                        placeholder="your@email.com"
+                        required
+                    >
+                    {% if form.email.errors %}
+                        <div style="color: #e24b4a; font-size: 12px; margin-top: 6px;">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {{ form.email }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.password1.id_for_label }}">Password</label>
+                {% if form.password1 %}
+                    <input 
+                        type="password"
+                        class="form-input"
+                        id="{{ form.password1.id_for_label }}"
+                        name="password1"
+                        placeholder="Create a strong password"
+                        onchange="validatePassword()"
+                        oninput="validatePassword()"
+                        required
+                    >
+                    {% if form.password1.errors %}
+                        <div style="color: #e24b4a; font-size: 12px; margin-top: 6px;">
+                            {{ form.password1.errors }}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {{ form.password1 }}
+                {% endif %}
+
+                <div class="password-requirements">
+                    <div class="requirements-title">Password Requirements</div>
+                    <div class="requirement-item">
+                        <span class="req-icon" id="req-length">✓</span>
+                        <span>At least 8 characters</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon" id="req-upper">○</span>
+                        <span>One uppercase letter (A-Z)</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon" id="req-lower">○</span>
+                        <span>One lowercase letter (a-z)</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon" id="req-number">○</span>
+                        <span>One number (0-9)</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon" id="req-special">○</span>
+                        <span>One special character (!@#$%^&*)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                {% if form.password2 %}
+                    <input 
+                        type="password"
+                        class="form-input"
+                        id="{{ form.password2.id_for_label }}"
+                        name="password2"
+                        placeholder="Re-enter your password"
+                        required
+                    >
+                    {% if form.password2.errors %}
+                        <div style="color: #e24b4a; font-size: 12px; margin-top: 6px;">
+                            {{ form.password2.errors }}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {{ form.password2 }}
+                {% endif %}
+            </div>
+
+            <button type="submit" class="form-submit">Create Account</button>
+
+            <div class="form-link">
+                Already have an account? <a href="{% url 'login' %}">Sign in</a>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    function validatePassword() {
+        const password = document.getElementById('{{ form.password1.id_for_label }}').value;
+        
+        const requirements = {
+            length: password.length >= 8,
+            upper: /[A-Z]/.test(password),
+            lower: /[a-z]/.test(password),
+            number: /[0-9]/.test(password),
+            special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+        };
+
+        updateRequirement('req-length', requirements.length);
+        updateRequirement('req-upper', requirements.upper);
+        updateRequirement('req-lower', requirements.lower);
+        updateRequirement('req-number', requirements.number);
+        updateRequirement('req-special', requirements.special);
+    }
+
+    function updateRequirement(elementId, isMet) {
+        const element = document.getElementById(elementId);
+        if (isMet) {
+            element.textContent = '✓';
+            element.classList.add('checked');
+            element.classList.remove('unchecked');
+        } else {
+            element.textContent = '○';
+            element.classList.remove('checked');
+            element.classList.add('unchecked');
+        }
+    }
+
+    // Initial check
+    validatePassword();
+</script>
 {% endblock %}

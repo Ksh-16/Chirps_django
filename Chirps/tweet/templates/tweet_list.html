@@ -1,258 +1,56 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Chirps Feed
+Chirps - Feed
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Page Header -->
-    <div class="mb-5">
-        <h1 class="mb-2">Welcome to Chirps 🐦</h1>
-        <p class="text-muted fs-5">Share your thoughts with the world</p>
-    </div>
+<div class="tweets-section">
+    <div class="tweets-container">
+        <div class="tweets-header">
+            <h1>Latest Chirps</h1>
+            {% if user.is_authenticated %}
+                <a href="{% url 'tweet_create' %}" class="btn-create">+ New Chirp</a>
+            {% endif %}
+        </div>
 
-    <!-- Create Tweet Button -->
-    <div class="mb-4">
-        <a class="btn btn-primary btn-lg" href="{% url 'tweet_create' %}" role="button">
-            ✨ Create a New Tweet
-        </a>
-    </div>
-
-    <!-- Tweets Feed -->
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            {% if tweets %}
+        {% if tweets %}
+            <div class="tweets-grid">
                 {% for tweet in tweets %}
                     <div class="tweet-card">
-                        <!-- Tweet Header -->
-                        <div class="tweet-header">
-                            <div>
-                                <h5 class="tweet-user mb-1">{{ tweet.user.username }}</h5>
-                                <p class="tweet-timestamp mb-0">
-                                    <small>{{ tweet.created_at|date:"M d, Y H:i" }}</small>
-                                </p>
-                            </div>
-                            {% if tweet.user == user %}
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                        ⋯
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item" href="{% url 'tweet_edit' tweet.id %}">
-                                                ✏️ Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-danger" href="{% url 'tweet_delete' tweet.id %}">
-                                                🗑️ Delete
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Tweet Content -->
-                        <div class="tweet-content">
-                            {{ tweet.text }}
-                        </div>
-
-                        <!-- Tweet Image (if exists) -->
                         {% if tweet.photo %}
-                            <img src="{{ tweet.photo.url }}" alt="Tweet image" class="tweet-image">
+                            <img src="{{ tweet.photo.url }}" class="tweet-image" alt="Chirp photo">
+                        {% else %}
+                            <div class="tweet-image"></div>
                         {% endif %}
-
-                        <!-- Tweet Actions -->
-                        <div class="tweet-actions">
-                            <!-- Like Button -->
-                            <button class="btn btn-sm btn-action-like" title="Like this tweet">
-                                ❤️ Like <span class="action-count">0</span>
-                            </button>
-
-                            <!-- Comment Button -->
-                            <button class="btn btn-sm btn-action-comment" title="Comment on this tweet">
-                                💬 Comment <span class="action-count">0</span>
-                            </button>
-
-                            <!-- Edit/Delete (only for author) -->
-                            {% if tweet.user == user %}
-                                <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-sm btn-action-edit">
-                                    ✏️ Edit
-                                </a>
-                                <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-sm btn-action-delete">
-                                    🗑️ Delete
-                                </a>
+                        <div class="tweet-body">
+                            <div class="tweet-user">@{{ tweet.user.username }}</div>
+                            <p class="tweet-text">{{ tweet.text }}</p>
+                            {% if tweet.created_at %}
+                                <small style="color: #a0886f; font-size: 11px;">{{ tweet.created_at|date:"M d, Y" }}</small>
                             {% endif %}
-                        </div>
-
-                        <!-- Comment Section (Hidden by default) -->
-                        <div class="comment-section mt-3" style="display: none;">
-                            <div class="comment-form">
-                                <textarea class="form-control form-control-sm" placeholder="Add a comment..." rows="2" maxlength="240"></textarea>
-                                <div class="mt-2">
-                                    <button class="btn btn-sm btn-primary">Post Comment</button>
-                                    <button class="btn btn-sm btn-secondary cancel-comment">Cancel</button>
+                            {% if tweet.user == user %}
+                                <div class="tweet-actions" style="margin-top: 12px;">
+                                    <a href="{% url 'tweet_edit' tweet.id %}" class="tweet-btn">Edit</a>
+                                    <a href="{% url 'tweet_delete' tweet.id %}" class="tweet-btn">Delete</a>
                                 </div>
-                            </div>
-                            <div class="comments-list mt-3">
-                                <p class="text-muted text-center">No comments yet. Be the first to comment!</p>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
-            {% else %}
-                <!-- Empty State -->
-                <div class="card bg-primary-light text-center py-5">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🪶</div>
-                    <h4>No tweets yet</h4>
-                    <p class="text-muted mb-3">Be the first to share your thoughts!</p>
-                    <a href="{% url 'tweet_create' %}" class="btn btn-primary">
-                        Create Your First Tweet
-                    </a>
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <div style="text-align: center; padding: 60px 20px;">
+                <div style="font-size: 48px; margin-bottom: 16px;">🐦</div>
+                <h2 style="color: #5a3e2b; font-size: 20px; margin-bottom: 8px;">No Chirps Yet</h2>
+                <p style="color: #8b6f47; margin-bottom: 24px;">Be the first to share something amazing!</p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'tweet_create' %}" class="btn btn-primary">Create Your First Chirp</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-primary">Join and Start Chirping</a>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 </div>
-
-<!-- JavaScript for Like and Comment Features -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Like Button Handler
-    document.querySelectorAll('.btn-action-like').forEach(button => {
-        button.addEventListener('click', function() {
-            const card = this.closest('.tweet-card');
-            const countSpan = this.querySelector('.action-count');
-            let count = parseInt(countSpan.textContent);
-            
-            if (this.classList.contains('active')) {
-                count--;
-                this.classList.remove('active');
-            } else {
-                count++;
-                this.classList.add('active');
-            }
-            
-            countSpan.textContent = count;
-        });
-    });
-
-    // Comment Button Handler
-    document.querySelectorAll('.btn-action-comment').forEach(button => {
-        button.addEventListener('click', function() {
-            const card = this.closest('.tweet-card');
-            const commentSection = card.querySelector('.comment-section');
-            commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
-        });
-    });
-
-    // Cancel Comment Handler
-    document.querySelectorAll('.cancel-comment').forEach(button => {
-        button.addEventListener('click', function() {
-            const card = this.closest('.tweet-card');
-            const commentSection = card.querySelector('.comment-section');
-            commentSection.style.display = 'none';
-        });
-    });
-
-    // Post Comment Handler
-    document.querySelectorAll('.comment-form button:first-child').forEach(button => {
-        button.addEventListener('click', function() {
-            const form = this.closest('.comment-form');
-            const textarea = form.querySelector('textarea');
-            const commentText = textarea.value.trim();
-            
-            if (commentText) {
-                const commentsList = form.nextElementSibling;
-                const newComment = document.createElement('div');
-                newComment.className = 'comment-item mb-2 p-2 bg-light rounded';
-                newComment.innerHTML = `
-                    <p class="mb-0">
-                        <strong style="color: var(--primary);">You</strong>
-                        <span style="color: var(--text-light); font-size: 0.85rem;">just now</span>
-                    </p>
-                    <p class="mb-0" style="color: var(--text-dark);">${commentText}</p>
-                `;
-                
-                // Remove "No comments" message if it exists
-                const noComments = commentsList.querySelector('.text-muted');
-                if (noComments) {
-                    noComments.remove();
-                }
-                
-                commentsList.prepend(newComment);
-                textarea.value = '';
-                
-                // Update comment count
-                const card = form.closest('.tweet-card');
-                const commentBtn = card.querySelector('.btn-action-comment .action-count');
-                commentBtn.textContent = parseInt(commentBtn.textContent) + 1;
-            }
-        });
-    });
-});
-</script>
-
-<!-- Custom Styles for Tweet Actions -->
-<style>
-.btn-action-like,
-.btn-action-comment,
-.btn-action-edit,
-.btn-action-delete {
-    border-color: #f0f0f0;
-    color: var(--text-light);
-    transition: all 0.3s ease;
-    flex: 1;
-}
-
-.btn-action-like:hover,
-.btn-action-comment:hover {
-    color: var(--primary);
-    border-color: var(--primary);
-    background-color: rgba(99, 102, 241, 0.05);
-}
-
-.btn-action-like.active {
-    color: var(--accent);
-    border-color: var(--accent);
-    background-color: rgba(236, 72, 153, 0.05);
-}
-
-.btn-action-edit {
-    color: var(--primary);
-    border-color: var(--primary);
-}
-
-.btn-action-edit:hover {
-    background-color: rgba(99, 102, 241, 0.05);
-    color: var(--primary);
-}
-
-.btn-action-delete {
-    color: #ef4444;
-    border-color: #ef4444;
-}
-
-.btn-action-delete:hover {
-    background-color: rgba(239, 68, 68, 0.05);
-    color: #ef4444;
-}
-
-.action-count {
-    font-size: 0.85rem;
-    opacity: 0.7;
-}
-
-.comment-item {
-    border-left: 3px solid var(--primary);
-}
-
-.comment-form {
-    background-color: #fafafa;
-    padding: 1rem;
-    border-radius: 8px;
-}
-</style>
 {% endblock %}
