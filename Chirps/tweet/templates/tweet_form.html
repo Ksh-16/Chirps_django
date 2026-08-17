@@ -66,12 +66,16 @@ Chirps - Create
                         onchange="previewImage(event)"
                     >
                     
-                    {% if form.instance.photo %}
-                        <div class="image-preview">
-                            <img src="{{ form.instance.photo.url }}" class="preview-img" alt="Current photo">
-                            <button type="button" class="remove-img" onclick="removeImage()">Remove Photo</button>
-                        </div>
-                    {% endif %}
+                   {% if form.instance.photo %}
+       <div style="margin-bottom: 16px;">
+           <label class="upload-label">Current Photo:</label>
+           <div class="image-preview">
+               <img src="{{ form.instance.photo.url }}" class="preview-img" alt="Current photo" id="existing-photo">
+               <button type="button" class="remove-img" onclick="removeExistingPhoto()">Remove Photo</button>
+           </div>
+           <input type="hidden" name="remove_photo" id="remove_photo" value="0">
+       </div>
+   {% endif %}
                     
                     <div id="preview-container"></div>
 
@@ -141,5 +145,10 @@ Chirps - Create
             existingPreview.remove();
         }
     }
+    // Remove existing photo
+   function removeExistingPhoto() {
+       document.getElementById('existing-photo').parentElement.parentElement.style.display = 'none';
+       document.getElementById('remove_photo').value = '1';
+   }
 </script>
 {% endblock %}

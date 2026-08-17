@@ -130,6 +130,7 @@ body {
   display: flex;
   gap: 12px;
   align-items: center;
+  margin-left: auto;
 }
 
 .user-avatar {
@@ -1208,5 +1209,74 @@ body {
 
   .form-group {
     margin-bottom: 16px;
+  }
+}
+/* ============================================
+   MINIMAL NAVBAR AUTH BUTTONS (ADD TO END OF style.css)
+   ============================================ */
+
+/* ============================================
+   NAVBAR AUTH BUTTONS - STYLED
+   ============================================ */
+
+.navbar-link-btn {
+  color: #8b6f47;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1.5px solid #d4a574;
+  background: white;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.navbar-link-btn:hover {
+  background: #faf8f5;
+  color: #d4a574;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.navbar-register-btn {
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #d4a574 0%, #c9945c 100%);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(212, 165, 116, 0.2);
+}
+
+.navbar-register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+  text-decoration: none;
+  color: white;
+}
+
+.user-menu {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-left: auto;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-link-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  
+  .navbar-register-btn {
+    padding: 6px 12px;
+    font-size: 11px;
   }
 }

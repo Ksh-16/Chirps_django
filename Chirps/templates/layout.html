@@ -31,9 +31,13 @@
                     <div class="user-avatar" title="Profile">
                         {{ user.username|upper|first }}
                     </div>
-                    <a href="{% url 'logout' %}" style="text-decoration: none; font-size: 13px; color: #8b6f47; font-weight: 500;">Logout</a>
+                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none; border:none; color:#8b6f47; text-decoration:none; font-size:13px; font-weight:500; cursor:pointer;">Logout</button>
+                    </form>
                 {% else %}
-                    <a href="{% url 'login' %}" style="text-decoration: none; font-size: 13px; color: #d4a574; font-weight: 600;">Login</a>
+                    <a href="{% url 'login' %}" class="navbar-link-btn">Login</a>
+                    <a href="{% url 'register' %}" class="navbar-register-btn">Register</a>
                 {% endif %}
             </div>
         </div>
