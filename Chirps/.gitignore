@@ -36,3 +36,5 @@ Thumbs.db
 *.log
 .pytest_cache/
 .coverage
+
+.env
