@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Tweet
-from .forms import TweetForm, UserRegistrationForm
+from .models import Tweet,Like,Comment
+from .forms import TweetForm,CommentForm, UserRegistrationForm
 from django.shortcuts import get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -57,6 +57,39 @@ def tweet_delete(request,tweet_id):
             return redirect('tweet_list')
         return render(request,'tweet_confirm_delete.html',{'tweet':tweet})
 
+@login_required
+def toggle_like(request, tweet_id):
+    tweet = get_object_or_404(Tweet, pk=tweet_id)
+    like_obj = Like.objects.filter(user=request.user, tweet=tweet)
+    
+    if like_obj.exists():
+        like_obj.delete()
+    else:
+        Like.objects.create(user=request.user, tweet=tweet)
+    
+    return redirect('tweet_list')
+ 
+@login_required
+def add_comment(request, tweet_id):
+    tweet = get_object_or_404(Tweet, pk=tweet_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.tweet = tweet
+            comment.save()
+    
+    return redirect('tweet_list')
+ 
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id, user=request.user)
+    if request.method == 'POST':
+        comment.delete()
+    
+    return redirect('tweet_list')
+ 
 
 def register(request):
      if request.method=='POST':
