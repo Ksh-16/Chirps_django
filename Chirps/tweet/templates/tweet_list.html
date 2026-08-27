@@ -5,511 +5,131 @@ Tweet
 {% endblock %}
 
 {% block content %}
-
-<style>
-    .tweet-card {
-        background: #faf8f3;
-        border: 1px solid #e8dcc8;
-        border-radius: 12px;
-        padding: 1.25rem;
-        max-width: 600px;
-    }
-
-    .tweet-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-
-    .avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #d4a574, #c7859f);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 600;
-        font-size: 16px;
-        flex-shrink: 0;
-    }
-
-    .tweet-username {
-        font-weight: 600;
-        color: #2c2c2a;
-        margin: 0;
-        font-size: 14px;
-    }
-
-    .tweet-date {
-        color: #888780;
-        font-size: 13px;
-        margin: 4px 0 0;
-    }
-
-    .tweet-text {
-        color: #2c2c2a;
-        margin: 12px 0;
-        line-height: 1.5;
-        font-size: 15px;
-    }
-
-    .tweet-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin: 12px 0;
-    }
-
-    .tweet-actions {
-        display: flex;
-        gap: 16px;
-        padding: 12px 0;
-        border-top: 1px solid #e8dcc8;
-        border-bottom: 1px solid #e8dcc8;
-        margin-top: 12px;
-    }
-
-    .like-button {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 500;
-        padding: 4px 8px;
-        border-radius: 6px;
-    }
-
-    .like-button.liked {
-        color: #c7859f;
-    }
-
-    .like-button.not-liked {
-        color: #888780;
-    }
-
-    .comment-link {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        text-decoration: none;
-        color: #888780;
-        font-size: 13px;
-        font-weight: 500;
-        padding: 4px 8px;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
-    .owner-actions {
-        display: flex;
-        gap: 8px;
-        margin-top: 12px;
-    }
-
-    .comments-section {
-        margin-top: 12px;
-    }
-
-    .comment {
-        margin: 12px 0;
-        padding: 12px;
-        background: white;
-        border-radius: 8px;
-        border: 0.5px solid #e8dcc8;
-    }
-
-    .comment-header {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        margin-bottom: 6px;
-    }
-
-    .comment-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #d4a574;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 600;
-        flex-shrink: 0;
-    }
-
-    .comment-user {
-        font-weight: 600;
-        color: #2c2c2a;
-        font-size: 13px;
-        margin: 0;
-    }
-
-    .comment-date {
-        color: #888780;
-        font-size: 12px;
-        margin: 2px 0 0;
-    }
-
-    .comment-text {
-        color: #2c2c2a;
-        font-size: 14px;
-        margin: 6px 0 0;
-    }
-
-    .delete-comment {
-        font-size: 12px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #888780;
-        padding: 0;
-        margin-top: 8px;
-    }
-
-    .comment-form {
-        margin-top: 12px;
-        display: flex;
-        gap: 8px;
-    }
-
-    .comment-user-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #d4a574;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 600;
-        flex-shrink: 0;
-    }
-
-    .comment-input-container {
-        flex: 1;
-    }
-
-    .comment-textarea {
-        width: 100%;
-        border: 1px solid #e8dcc8;
-        border-radius: 6px;
-        padding: 10px 12px;
-        font-size: 13px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        resize: vertical;
-        min-height: 36px;
-        box-sizing: border-box;
-    }
-
-    .reply-button {
-        margin-top: 6px;
-        background: #d4a574;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .login-message {
-        color: #888780;
-        font-size: 13px;
-        margin-top: 12px;
-    }
-
-    .login-link {
-        color: #c7859f;
-        text-decoration: none;
-    }
-</style>
-
-
 <div style="padding: 2rem 0;">
-
-    <h1 style="margin-bottom: 2rem; color: #2c2c2a;">
-        Welcome to Chirps
-    </h1>
-
-
-    <a
-        class="btn btn-primary"
-        href="{% url 'tweet_create' %}"
-        style="margin-bottom: 2rem;"
-    >
-        Create a tweet
-    </a>
-
-
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-
-        {% for tweet in tweets %}
-
-        <div class="tweet-card">
-
-            <!-- Tweet Header -->
-            <div class="tweet-header">
-
-                <div class="avatar">
-                    {{ tweet.user.username|first|upper }}
-                </div>
-
-                <div>
-
-                    <p class="tweet-username">
-                        {{ tweet.user.username }}
-                    </p>
-
-                    <p class="tweet-date">
-                        {{ tweet.created_at|date:"M d, Y H:i" }}
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- Tweet Text -->
-            <p class="tweet-text">
-                {{ tweet.text }}
-            </p>
-
-
-            <!-- Tweet Image -->
-            {% if tweet.photo %}
-
-            <img
-                src="{{ tweet.photo.url }}"
-                alt="Tweet image"
-                class="tweet-image"
-            >
-
-            {% endif %}
-
-
-            <!-- Tweet Actions -->
-            <div class="tweet-actions">
-
-                <!-- Like Button -->
-                <form
-                    method="post"
-                    action="{% url 'toggle_like' tweet.id %}"
-                    style="margin: 0;"
-                >
-
-                    {% csrf_token %}
-
-                    {% if tweet.liked_by_user %}
-
-                    <button
-                        type="submit"
-                        class="like-button liked"
-                    >
-                        <span style="font-size: 16px;">♥</span>
-                        <span>{{ tweet.likes.count }}</span>
-                    </button>
-
-                    {% else %}
-
-                    <button
-                        type="submit"
-                        class="like-button not-liked"
-                    >
-                        <span style="font-size: 16px;">♥</span>
-                        <span>{{ tweet.likes.count }}</span>
-                    </button>
-
-                    {% endif %}
-
-                </form>
-
-
-                <!-- Comment Count -->
-                <a
-                    href="#comments-{{ tweet.id }}"
-                    class="comment-link"
-                >
-                    <span style="font-size: 16px;">💬</span>
-                    <span>{{ tweet.comments.count }}</span>
-                </a>
-
-            </div>
-
-
-            <!-- Edit/Delete for Owner -->
-            {% if tweet.user == user %}
-
-            <div class="owner-actions">
-
-                <a
-                    href="{% url 'tweet_edit' tweet.id %}"
-                    class="btn btn-sm btn-warning"
-                    style="padding: 6px 12px; font-size: 13px;"
-                >
-                    Edit
-                </a>
-
-                <a
-                    href="{% url 'tweet_delete' tweet.id %}"
-                    class="btn btn-sm btn-danger"
-                    style="padding: 6px 12px; font-size: 13px;"
-                >
-                    Delete
-                </a>
-
-            </div>
-
-            {% endif %}
-
-
-            <!-- Comments Section -->
-            <div
-                id="comments-{{ tweet.id }}"
-                class="comments-section"
-            >
-
-                <!-- Existing Comments -->
-                {% for comment in tweet.comments.all %}
-
-                <div class="comment">
-
-                    <!-- Comment Header -->
-                    <div class="comment-header">
-
-                        <div class="comment-avatar">
-                            {{ comment.user.username|first|upper }}
-                        </div>
-
-                        <div style="flex: 1;">
-
-                            <p class="comment-user">
-                                {{ comment.user.username }}
-                            </p>
-
-                            <p class="comment-date">
-                                {{ comment.created_at|date:"M d, Y H:i" }}
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Comment Text -->
-                    <p class="comment-text">
-                        {{ comment.text }}
-                    </p>
-
-
-                    <!-- Delete Comment -->
-                    {% if comment.user == user %}
-
-                    <form
-                        method="post"
-                        action="{% url 'delete_comment' comment.id %}"
-                    >
-
-                        {% csrf_token %}
-
-                        <button
-                            type="submit"
-                            class="delete-comment"
-                        >
-                            Delete
-                        </button>
-
-                    </form>
-
-                    {% endif %}
-
-                </div>
-
-                {% endfor %}
-
-
-                <!-- Add Comment -->
-                {% if user.is_authenticated %}
-
-                <form
-                    method="post"
-                    action="{% url 'add_comment' tweet.id %}"
-                    class="comment-form"
-                >
-
-                    {% csrf_token %}
-
-
-                    <!-- User Avatar -->
-                    <div class="comment-user-avatar">
-                        {{ user.username|first|upper }}
-                    </div>
-
-
-                    <!-- Comment Input -->
-                    <div class="comment-input-container">
-
-                        <textarea
-                            name="text"
-                            placeholder="Reply to this tweet..."
-                            class="comment-textarea"
-                            required
-                        ></textarea>
-
-
-                        <button
-                            type="submit"
-                            class="reply-button"
-                        >
-                            Reply
-                        </button>
-
-                    </div>
-
-                </form>
-
-
-                {% else %}
-
-                <p class="login-message">
-
-                    <a
-                        href="{% url 'login' %}"
-                        class="login-link"
-                    >
-                        Login
-                    </a>
-
-                    to reply to this tweet.
-
-                </p>
-
-                {% endif %}
-
-            </div>
-
+  <h1 style="margin-bottom: 2rem; color: #2c2c2a;">Welcome to Chirps</h1>
+
+  <a class="btn btn-primary" href="{% url 'tweet_create' %}" style="margin-bottom: 2rem;">Create a tweet</a>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+    {% for tweet in tweets %}
+    <div style="background: #faf8f3; border: 1px solid #e8dcc8; border-radius: 12px; padding: 1.25rem;">
+      
+      <!-- Tweet Header -->
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #d4a574, #c7859f); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 16px;">
+          {{ tweet.user.username|first|upper }}
         </div>
+        <div>
+          <p style="font-weight: 600; color: #2c2c2a; margin: 0; font-size: 14px;">{{ tweet.user.username }}</p>
+          <p style="color: #888780; font-size: 13px; margin: 4px 0 0;">{{ tweet.created_at|date:"M d, Y H:i" }}</p>
+        </div>
+      </div>
 
-        {% empty %}
+      <!-- Tweet Text -->
+      <p style="color: #2c2c2a; margin: 12px 0; line-height: 1.5; font-size: 15px;">{{ tweet.text }}</p>
 
-        <p style="color: #888780;">
-            No tweets yet. Be the first to create one!
-        </p>
+      <!-- Tweet Image -->
+      {% if tweet.photo %}
+      <img src="{{ tweet.photo.url }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin: 12px 0;">
+      {% endif %}
 
-        {% endfor %}
+      <!-- Tweet Actions (Like & Comment Count) -->
+      <div style="display: flex; gap: 16px; padding: 12px 0; border-top: 1px solid #e8dcc8; border-bottom: 1px solid #e8dcc8; margin-top: 12px;">
+        
+        <!-- Like Button -->
+        <form method="post" action="{% url 'toggle_like' tweet.id %}" style="margin: 0;">
+          {% csrf_token %}
+          <button type="submit" style="display: flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; color: #888780; font-size: 13px; font-weight: 500; padding: 4px 8px; border-radius: 6px; transition: all 0.2s ease;">
+            <span style="font-size: 16px;">♥</span>
+            <span>{{ tweet.likes.count }}</span>
+          </button>
+        </form>
+
+        <!-- Comment Count -->
+        <a href="#comments-{{ tweet.id }}" style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: #888780; font-size: 13px; font-weight: 500; padding: 4px 8px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer;">
+          <span style="font-size: 16px;">💬</span>
+          <span>{{ tweet.comments.count }}</span>
+        </a>
+
+      </div>
+
+      <!-- Edit/Delete for Owner -->
+      {% if tweet.user == user %}
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-sm btn-warning" style="padding: 6px 12px; font-size: 13px;">Edit</a>
+        <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-sm btn-danger" style="padding: 6px 12px; font-size: 13px;">Delete</a>
+      </div>
+      {% endif %}
+
+      <!-- Comments Section -->
+      <div id="comments-{{ tweet.id }}" style="margin-top: 12px;">
+        {% if tweet.comments.all %}
+          <!-- Toggle Button -->
+          <button onclick="document.getElementById('comments-list-{{ tweet.id }}').classList.toggle('collapsed'); document.getElementById('chevron-{{ tweet.id }}').classList.toggle('open');" style="display: flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; color: #888780; font-size: 13px; padding: 6px 0; transition: all 0.2s ease; width: 100%; text-align: left; font-weight: 500;">
+            <span id="chevron-{{ tweet.id }}" style="display: inline-block; font-size: 10px; transition: transform 0.2s ease; transform: rotate(180deg);">▼</span>
+            <span>View all {{ tweet.comments.count }} comments</span>
+          </button>
+
+          <!-- Comments List -->
+          <div id="comments-list-{{ tweet.id }}" style="max-height: 500px; overflow-y: auto; margin-top: 12px;">
+            {% for comment in tweet.comments.all %}
+            <div style="margin: 12px 0; padding: 12px; background: white; border-radius: 8px; border: 0.5px solid #e8dcc8;">
+              
+              <!-- Comment Header -->
+              <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: #d4a574; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0;">
+                  {{ comment.user.username|first|upper }}
+                </div>
+                <div style="flex: 1;">
+                  <p style="font-weight: 600; color: #2c2c2a; font-size: 13px; margin: 0;">{{ comment.user.username }}</p>
+                  <p style="color: #888780; font-size: 12px; margin: 2px 0 0;">{{ comment.created_at|date:"M d, Y H:i" }}</p>
+                </div>
+              </div>
+
+              <!-- Comment Text -->
+              <p style="color: #2c2c2a; font-size: 14px; margin: 6px 0 0;">{{ comment.text }}</p>
+
+              <!-- Delete Comment for Owner -->
+              {% if comment.user == user %}
+              <form method="post" action="{% url 'delete_comment' comment.id %}" style="margin-top: 8px; display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="font-size: 12px; background: none; border: none; cursor: pointer; color: #888780; padding: 0; transition: 0.2s;">
+                  Delete
+                </button>
+              </form>
+              {% endif %}
+
+            </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Add Comment Form -->
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'add_comment' tweet.id %}" style="margin-top: 12px; display: flex; gap: 8px;">
+          {% csrf_token %}
+          
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: #d4a574; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0;">
+            {{ user.username|first|upper }}
+          </div>
+          
+          <div style="flex: 1;">
+            <textarea name="text" placeholder="Reply to this tweet..." style="width: 100%; border: 1px solid #e8dcc8; border-radius: 6px; padding: 10px 12px; font-size: 13px; font-family: inherit; resize: vertical; min-height: 36px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" required></textarea>
+            <button type="submit" style="margin-top: 6px; background: #d4a574; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;">
+              Reply
+            </button>
+          </div>
+          
+        </form>
+        {% else %}
+        <p style="color: #888780; font-size: 13px; margin-top: 12px;"><a href="{% url 'login' %}" style="color: #c7859f; text-decoration: none;">Login</a> to reply to this tweet.</p>
+        {% endif %}
+
+      </div>
 
     </div>
+    {% endfor %}
+  </div>
 
 </div>
-
 {% endblock %}
